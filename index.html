@@ -15,6 +15,7 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
             flex-direction: column;
+            cursor: pointer; /* Lets the user know they can click */
         }
         canvas {
             background-color: #050508;
@@ -22,22 +23,37 @@
             max-width: 100%;
             max-height: 90vh;
         }
-        /* Hidden audio player container */
-        #audio-container {
-            display: none;
+        /* Hint text to tell her to click for music */
+        #music-hint {
+            color: #555;
+            font-size: 14px;
+            margin-top: 10px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
     <canvas id="nightCanvas" width="1000" height="700"></canvas>
+    <div id="music-hint">Tap anywhere on the screen for music</div>
 
-    <!-- Background Music (JVKE - HER) -->
-    <div id="audio-container">
-        <iframe width="0" height="0" src="https://www.youtube.com/embed/r12gVh6i_sY?autoplay=1&loop=1&playlist=r12gVh6i_sY" title="YouTube video player" frameborder="0" allow="autoplay"></iframe>
-    </div>
+    <!-- Background Music (Local MP3 File) -->
+    <audio id="bg-music" loop autoplay>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
+        // --- Play Music on Click (Browser Autoplay Fix) ---
+        // Browsers block autoplay. This ensures the song plays when she taps the screen.
+        document.body.addEventListener('click', () => {
+            const music = document.getElementById('bg-music');
+            if (music.paused) {
+                music.play();
+            }
+            // Hide the hint once clicked
+            document.getElementById('music-hint').style.display = 'none';
+        });
+
         const canvas = document.getElementById('nightCanvas');
         const ctx = canvas.getContext('2d');
 
